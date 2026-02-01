@@ -3,6 +3,7 @@ package com.example.checkout.controller;
 import com.example.checkout.model.Item;
 import com.example.checkout.repository.ItemRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -43,5 +44,11 @@ public class ItemController {
     @DeleteMapping("/{sku}")
     public void deleteItem(@PathVariable String sku) {
         itemRepository.deleteBySku(sku);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleNotFoundException() {
+        // This method ensures a 404 status is returned for RuntimeExceptions and further log this to APM
     }
 }

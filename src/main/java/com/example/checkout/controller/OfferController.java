@@ -2,6 +2,7 @@ package com.example.checkout.controller;
 
 import com.example.checkout.model.Offer;
 import com.example.checkout.repository.OfferRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -42,5 +43,11 @@ public class OfferController {
     @DeleteMapping("/{id}")
     public void deleteOffer(@PathVariable String id) {
         offerRepository.deleteById(id);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleNotFoundException() {
+        // This method ensures a 404 status is returned for RuntimeExceptions and further log this to APM
     }
 }

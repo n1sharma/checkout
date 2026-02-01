@@ -26,6 +26,9 @@ public class CheckoutService {
     }
 
     public int checkout(List<String> skus) {
+        if(skus == null || skus.isEmpty()) {
+            return 0;
+        }
         Cart cart = new Cart();
         for (String sku : skus) {
             cart.addItem(sku, 1);
@@ -44,6 +47,10 @@ public class CheckoutService {
         for (Map.Entry<String, Integer> entry : cart.getItems().entrySet()) {
             String sku = entry.getKey();
             int quantity = entry.getValue();
+
+            if (!items.containsKey(sku)) { // Skip non-existent SKUs
+                continue;
+            }
 
             if (offersBySku.containsKey(sku)) {
                 Offer offer = offersBySku.get(sku);
